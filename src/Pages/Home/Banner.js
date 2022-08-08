@@ -4,7 +4,7 @@ import MainButton from '../Shared/MainButton';
 
 const Banner = () => {
     return (
-        <div className="hero min-h-screen">
+        <div className="hero min-h-screen bg-none">
         <div className="hero-content flex-col lg:flex-row-reverse">
           <img src={chair} className="max-w-sm max-w-lg rounded-lg shadow-2xl"/>
           <div>

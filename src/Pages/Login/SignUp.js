@@ -1,15 +1,15 @@
 import React from 'react';
-import { useCreateUserWithEmailAndPassword, useUpdateProfile } from 'react-firebase-hooks/auth';
+import { useCreateUserWithEmailAndPassword, useSignInWithGoogle, useUpdateProfile } from 'react-firebase-hooks/auth';
 import auth from '../../firbase.init';
 import Loading from '../Shared/Loading';
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from 'react-router-dom';
+import useToken from '../../hooks/useToken';
 
 const SignUp = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
     const [updateProfile, updating, updateError] = useUpdateProfile(auth);
-    const navigate = useNavigate
-
+    const navigate = useNavigate();
     const [
         createUserWithEmailAndPassword,
         user,
@@ -17,6 +17,10 @@ const SignUp = () => {
         error,
     ] = useCreateUserWithEmailAndPassword(auth);
 
+    const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
+
+    const [token] = useToken(user || gUser)
+console.log(token)
  
 
 
@@ -26,17 +30,25 @@ const SignUp = () => {
 
     let signInError;
 
-    if (error || updateError) {
+    if (error || updateError || gUser) {
         return (
             signInError = <p className='text-red-500'><small>{error?.message}</small> <small>{updateError?.message}</small></p>
         );
     }
 
+    if(token){
+        navigate('/appointment')
+    }
+
     const onSubmit = async data => {
         await createUserWithEmailAndPassword(data.email, data.password);
         await updateProfile({ displayName: data.name });
-        navigate('/appointment')
     };
+
+    const hangleSignOut = () => {
+        signInWithGoogle()
+    }
+
 
     return (
         <div className='flex h-screen justify-center items-center'>
@@ -131,6 +143,7 @@ const SignUp = () => {
 
                     <div className="divider">OR</div>
                     <button
+                    onClick={hangleSignOut}
                         className="btn btn-outline"
                     >Continue with Google</button>
                 </div>

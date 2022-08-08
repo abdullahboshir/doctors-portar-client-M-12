@@ -6,6 +6,12 @@ import auth from '../../../firbase.init';
 
 const Navbar = () => {
     const [user, loading, error] = useAuthState(auth);
+
+    const handleSignOut = () => {
+        signOut(auth);
+        localStorage.removeItem('accessToken');
+    }
+
     const menutItems = <>
         <li><Link to='/home'>Home</Link></li>
         <li><Link to='/appointment'>Appointment</Link></li>
@@ -15,7 +21,7 @@ const Navbar = () => {
         {
             user &&  <li><Link to='/dashboard'>Dashboard</Link></li>
         }
-        <li>{user? <button onClick={() => signOut(auth)}>Sign Out</button> :<Link to='/login'>Login</Link>}</li>
+        <li>{user? <button onClick={handleSignOut}>Sign Out</button> :<Link to='/login'>Login</Link>}</li>
     </>
     return (
         <div className="navbar bg-base-100">
@@ -36,7 +42,7 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className="navbar-end">
-            <label tabIndex="1" for="dashboard-sidebar" className="btn btn-ghost lg:hidden">
+            <label tabIndex="1" htmlFor="dashboard-sidebar" className="btn btn-ghost lg:hidden">
                         <svg xmlns="http://www.w3.org/2000/svg"  className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
                     </label>
             </div>

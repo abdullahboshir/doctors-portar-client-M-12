@@ -16,10 +16,12 @@ import Dashboard from './Pages/Dashboard/Dashboard';
 import MyAppointment from './Pages/Dashboard/MyAppointment';
 import MyReview from './Pages/Dashboard/MyReview';
 import MyHistory from './Pages/Dashboard/MyHistory';
+import Users from './Pages/Dashboard/Users';
+import RequireAdmin from './Pages/Login/RequireAdmin';
 
 function App() {
   return (
-    <div className='max-w-7xl mx-auto'>
+    <div className='max-w-7xl mx-auto bg-white'>
         <Navbar/>
       <Routes>
         <Route path='/' element={<Home/>}/>
@@ -39,6 +41,7 @@ function App() {
           <Route index element={<MyAppointment/>}></Route>
           <Route path='review' element={<MyReview/>}></Route>
           <Route path='history' element={<MyHistory/>}></Route>
+          <Route path='users' element={<RequireAdmin><Users/></RequireAdmin>}></Route>
         </Route>
         <Route path='reviews' element={<Reviews/>}/>
         <Route path='contactus' element={<ContactUs/>}/>
